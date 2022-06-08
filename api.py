@@ -5,6 +5,9 @@ from typing import Any, Dict, List, Tuple
 import requests
 
 
+BASE_URL = 'http://127.0.0.1:8000'  # 基础 API URL
+
+
 class ApiError(BaseException):
     """API返回值为-1时抛出该异常
 
@@ -27,32 +30,32 @@ class ApiError(BaseException):
     """
 
 
-async def api_post(path: str, json: Dict) -> Dict[str, Any]:
+async def api_post(path: str, json: Dict) -> Dict[str, Any] | None:
     """_summary_
 
     Args:
-        path (str): 路径
+        path (str): BASE_URL 后的相对路径
         json (Dict): 字典，会被转换为JSON字符串置于请求体中
 
     Raises:
-        ApiError: 响应码为-1，包含错误信息
+        ApiError: 响应码为-1的异常，包含错误信息
 
     Returns:
-        Dict[str, Any]: 响应中的data字段
+        Dict[str, Any] | None: 响应中的 data 字段，可能为 None
     """
 
 
-async def api_get(path: str) -> Dict[str, Any]:
+async def api_get(path: str) -> Dict[str, Any] | None:
     """_summary_
 
     Args:
-        path (str): 路径
+        path (str): BASE_URL 后的相对路径
 
     Raises:
-        ApiError: 响应码为-1，包含错误信息
+        ApiError: 响应码为-1的异常，包含错误信息
 
     Returns:
-        Dict[str, Any]: 响应中的data字段
+        Dict[str, Any] | None: 响应中的 data 字段，可能为 None
     """
 
 
