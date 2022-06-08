@@ -9,3 +9,17 @@
 2. 克隆项目仓库
 
 3. 在项目根目录执行 `python3.10 -m pip install -r requirements.txt`
+
+4. 使用 `python3.10 main.py` 启动程序
+
+## 调试方法
+
+调试 AcssFrontend 的方法与调试 AcssBackend 的方法一致
+
+1. 使用 Visual Studio Code 打开本项目，并点击右下角 Python 版本切换至 Python3.10
+
+2. 在调试选项中选择 Python 文件 并创建 launch.json
+
+3. 在希望调试的位置添加断点
+
+4. 使用功能键 F5 启动调试
