@@ -25,7 +25,7 @@ class ApiError(BaseException):
     try:
         some_api()
     except ApiError as e:
-        some_toast(str(e))
+        some_toast(str(e)).show()
     ```
     """
 
