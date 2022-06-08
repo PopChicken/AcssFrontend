@@ -31,7 +31,7 @@ class ApiError(BaseException):
 
 
 async def api_post(path: str, json: Dict) -> Dict[str, Any] | None:
-    """_summary_
+    """POST 请求封装
 
     Args:
         path (str): BASE_URL 后的相对路径
@@ -46,7 +46,7 @@ async def api_post(path: str, json: Dict) -> Dict[str, Any] | None:
 
 
 async def api_get(path: str) -> Dict[str, Any] | None:
-    """_summary_
+    """GET 请求封装
 
     Args:
         path (str): BASE_URL 后的相对路径
