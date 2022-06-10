@@ -53,7 +53,7 @@ def create_window() -> MainWindow:
     loop = QEventLoop(app)
     asyncio.set_event_loop(loop)
 
-    ui_file = QFile("mainwindow.ui")
+    ui_file = QFile("admin/mainwindow.ui")
     if not ui_file.open(QIODevice.ReadOnly):
         print(f"Cannot open ui file: {ui_file.errorString()}")
         sys.exit(-1)
