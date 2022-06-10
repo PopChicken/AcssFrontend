@@ -46,7 +46,7 @@ async def api_post(path: str, json: Dict) -> Dict[str, Any] | None:
     url = BASE_URL + path
     try:
         if len(TOKEN) > 0:
-            header = {'Authorization': 'Bearer {}'.format(TOKEN)}
+            header = {'Authorization': f'Bearer {TOKEN}'}
             resp = requests.post(url=url,json=json,headers=header)
         else:
             resp = requests.post(url=url,json=json)
@@ -81,7 +81,7 @@ async def api_get(path: str) -> Dict[str, Any] | None:
     url = BASE_URL + path
     try:
         if len(TOKEN) > 0:
-            header = {'Authorization': 'Bearer {}'.format(TOKEN)}
+            header = {'Authorization': f'Bearer {TOKEN}'}
             resp = requests.get(url=url,headers=header)
         else:
             resp = requests.get(url=url)
