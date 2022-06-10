@@ -2,7 +2,7 @@
 import sys
 
 import qasync
-import user.mainwindow as mainwindow
+import mainwindow
 
 
 # TODO 仿照该函数编写其它点击事件函数
