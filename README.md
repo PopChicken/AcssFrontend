@@ -10,7 +10,7 @@
 
 3. 在项目根目录执行 `python3.10 -m pip install -r requirements.txt`
 
-4. 使用 `python3.10 main.py` 启动程序
+4. 使用 `python3.10 admin/main.py` 与 `python3.10 user/main.py` 分别启动用户客户端与管理员客户端程序
 
 ---
 

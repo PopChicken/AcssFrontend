@@ -1,8 +1,10 @@
 """程序入口"""
 import sys
 
+sys.path.append('.')
+
 import qasync
-import mainwindow
+import mainwindow as mainwindow
 
 
 # TODO 仿照该函数编写其它点击事件函数

@@ -6,7 +6,7 @@ import requests
 
 
 BASE_URL = 'http://127.0.0.1:8000'  # 基础 API URL
-
+TOKEN = ''
 
 class ApiError(BaseException):
     """API返回值为-1时抛出该异常
@@ -43,6 +43,27 @@ async def api_post(path: str, json: Dict) -> Dict[str, Any] | None:
     Returns:
         Dict[str, Any] | None: 响应中的 data 字段，可能为 None
     """
+    url = BASE_URL + path
+    try:
+        if len(TOKEN) > 0:
+            header = {'Authorization': 'Bearer {}'.format(TOKEN)}
+            resp = requests.post(url=url,json=json,headers=header)
+        else:
+            resp = requests.post(url=url,json=json)
+    except requests.exceptions.ConnectTimeout as e:
+        raise ApiError('连接超时') from e
+    except requests.exceptions.ConnectionError as e:
+        raise ApiError('连接错误') from e
+    except requests.exceptions.ReadTimeout as e:
+        raise ApiError('数据读取超时') from e
+    except requests.exceptions.HTTPError as e:
+        raise ApiError('Http错误') from e
+    except BaseException:
+        raise ApiError('网络错误')
+    else:
+        if resp['code'] == -1:
+            raise ApiError(resp['message'])
+        return resp['data']
 
 
 async def api_get(path: str) -> Dict[str, Any] | None:
@@ -57,6 +78,27 @@ async def api_get(path: str) -> Dict[str, Any] | None:
     Returns:
         Dict[str, Any] | None: 响应中的 data 字段，可能为 None
     """
+    url = BASE_URL + path
+    try:
+        if len(TOKEN) > 0:
+            header = {'Authorization': 'Bearer {}'.format(TOKEN)}
+            resp = requests.get(url=url,headers=header)
+        else:
+            resp = requests.get(url=url)
+    except requests.exceptions.ConnectTimeout as e:
+        raise ApiError('连接超时') from e
+    except requests.exceptions.ConnectionError as e:
+        raise ApiError('连接错误') from e
+    except requests.exceptions.ReadTimeout as e:
+        raise ApiError('数据读取超时') from e
+    except requests.exceptions.HTTPError as e:
+        raise ApiError('Http错误') from e
+    except BaseException:
+        raise ApiError('网络错误')
+    else:
+        if resp['code'] == -1:
+            raise ApiError(resp['message'])
+        return resp['data']
 
 
 async def login(username: str, password: str) -> Dict[str, Any]:
