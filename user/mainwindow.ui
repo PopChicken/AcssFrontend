@@ -26,7 +26,7 @@
    <bool>false</bool>
   </property>
   <property name="windowTitle">
-   <string>充电计费客户端</string>
+   <string>充电计费用户客户端</string>
   </property>
   <property name="autoFillBackground">
    <bool>false</bool>

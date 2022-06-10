@@ -22,18 +22,21 @@ class MainWindow:
         self.login_button: QPushButton = window.loginBtn  # 登录按钮
         self.register_button: QPushButton = window.registBtn  # 注册按钮
         self.logout_button: QPushButton = window.logoutBtn  # 退出登录按钮
-        self.charge_mode_box: QComboBox = window.chargeMode  # 充电模式选框
-        self.battery_capacity_input: QLineEdit = window.batteryCapacity  # 电池容量输入框
-        self.require_amount_input: QLineEdit = window.electricityReq  # 请求电量输入框
-        self.submit_request_button: QPushButton = window.chargeReqBtn  # 请求充电按钮
-        self.edit_request_button: QPushButton = window.rewriteBtn  # 修改充电请求按钮
-        self.end_request_button: QPushButton = window.endChargeBtn  # 结束/取消充电按钮
-        self.order_detail_table: QTableWidget = window.infoTable  # 详单表格
-        self.query_orders_button: QPushButton = window.searchBtn  # 查询详单按钮
-        self.time_label: QLabel = window.time  # 当前时间标签
-        self.status_label: QLabel = window.presentState  # 当前充电状态标签
-        self.queue_position_label: QLabel = window.presentQueue  # 当前队列位置标签
-        self.request_id_label: QLabel = window.queueNum  # 充电请求ID标签
+
+        self.query_queue_button: QPushButton = window.queueBtn  # 查询排队情况按钮
+        self.query_queue_table: QTableWidget = window.queueTable  # 查询排队情况表格
+
+        self.query_pile_state_button: QPushButton = window.pileStateBtn  # 查询充电桩状态按钮
+        self.query_pile_state_table: QTableWidget = window.pileStateTable  # 查询充电桩状态表格
+
+        self.query_pile_list_button: QPushButton = window.pileListBtn  # 查询充电桩报表按钮
+        self.query_pile_list_table: QTableWidget = window.pileListTable  # 查询充电桩报表表格
+
+        # 修改充电桩状态
+        self.pile_number_input: QLineEdit = window.pileNum  # 充电桩编号
+        self.pile_state_box: QComboBox = window.switchState  # 充电模式选框
+        self.update_button: QPushButton = window.updateBtn  # 更新按钮
+
 
 
 mainwindow: MainWindow = None
@@ -50,7 +53,7 @@ def create_window() -> MainWindow:
     loop = QEventLoop(app)
     asyncio.set_event_loop(loop)
 
-    ui_file = QFile("mainwindow.ui")
+    ui_file = QFile("admin/mainwindow.ui")
     if not ui_file.open(QIODevice.ReadOnly):
         print(f"Cannot open ui file: {ui_file.errorString()}")
         sys.exit(-1)
