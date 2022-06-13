@@ -147,7 +147,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>(userState)</string>
+     <string></string>
     </property>
    </widget>
    <widget class="QLabel" name="userIdentity">
@@ -160,7 +160,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>(userIdentity)</string>
+     <string></string>
     </property>
    </widget>
    <widget class="QPushButton" name="logoutBtn">
@@ -507,7 +507,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>(time)</string>
+     <string></string>
     </property>
    </widget>
    <widget class="QLabel" name="presentState">
@@ -520,7 +520,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>(presentState)</string>
+     <string></string>
     </property>
    </widget>
    <widget class="QLabel" name="presentQueue">
@@ -533,7 +533,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>(presentQueue)</string>
+     <string></string>
     </property>
    </widget>
    <widget class="QLabel" name="queueNum">
@@ -546,7 +546,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>(queueNum)</string>
+     <string></string>
     </property>
    </widget>
   </widget>

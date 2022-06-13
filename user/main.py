@@ -1,6 +1,7 @@
 """程序入口"""
 import sys
 import asyncio
+import datetime
 
 sys.path.append('.')
 
@@ -71,10 +72,46 @@ async def on_checklist_clicked():
         window.order_detail_table.setItem(i, 9, QTableWidgetItem(data[i]['total_cost']))
     QToaster.showMessage(window.window, "查询成功")
 
-
+last_state = 0
 @qasync.asyncSlot()
 async def preview_callback():
-    pass
+    try:
+        data = await api.preview_queue()
+    except api.ApiError as e:
+        QToaster.showMessage(window.window, str(e))
+        return
+    try:
+        now_time = await api.time()
+    except api.ApiError as e:
+        QToaster.showMessage(window.window, str(e))
+        return
+    # 排队长度
+    if data['queue_len'] != -1:
+        window.queue_position_label.setText(str(data['queue_len']))
+    # 排队号码
+    if data['charge_id']:
+        window.request_id_label.setText(data['charge_id'])
+    # 时间
+    window.time_label.setText(now_time[0])
+    # 状态
+    if data['cur_state'] == 'NOTCHARGING':
+        window.status_label.setText('没有充电请求')
+        if last_state == 1:
+            QToaster.showMessage(window.window, "充电结束")
+            last_state = 0
+    elif data['cur_state'] == 'WAITINGSTAGE1':
+        window.status_label.setText('在等候区等待')
+    elif data['cur_state'] == 'WAITINGSTAGE2':
+        window.status_label.setText('在充电区等待')
+    elif data['cur_state'] == 'CHARGING':
+        window.status_label.setText('正在充电')
+        last_state = 1
+    elif data['cur_state'] == 'CHANGEMODEREQUEUE':
+        window.status_label.setText('充电模式更改 重新排队')
+    elif data['cur_state'] == 'FAULTREQUEUE':
+        window.status_label.setText('充电桩故障')
+    
+    
 
 
 if __name__ == "__main__":

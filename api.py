@@ -136,4 +136,6 @@ async def query_order_detail() -> List[Dict[str, Any]]:
 
 
 async def preview_queue() -> Dict[str, Any]:
-    pass
+    data = await api_get('/user/preview_queue')
+    return data
+
