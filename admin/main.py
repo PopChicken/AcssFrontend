@@ -4,7 +4,9 @@ import sys
 sys.path.append('.')
 
 import qasync
-import mainwindow as mainwindow
+
+import mainwindow
+import api
 
 
 # TODO 仿照该函数编写其它点击事件函数

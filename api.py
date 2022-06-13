@@ -5,8 +5,9 @@ from typing import Any, Dict, List, Tuple
 import requests
 
 
-BASE_URL = 'http://127.0.0.1:8000'  # 基础 API URL
+BASE_URL = 'https://acss.jnn.icu/api'  # 基础 API URL
 TOKEN = ''
+
 
 class ApiError(BaseException):
     """API返回值为-1时抛出该异常
@@ -47,9 +48,9 @@ async def api_post(path: str, json: Dict) -> Dict[str, Any] | None:
     try:
         if len(TOKEN) > 0:
             header = {'Authorization': f'Bearer {TOKEN}'}
-            resp = requests.post(url=url,json=json,headers=header)
+            resp: dict = requests.post(url=url, json=json, headers=header).json()
         else:
-            resp = requests.post(url=url,json=json)
+            resp: dict = requests.post(url=url, json=json).json()
     except requests.exceptions.ConnectTimeout as e:
         raise ApiError('连接超时') from e
     except requests.exceptions.ConnectionError as e:
@@ -58,12 +59,11 @@ async def api_post(path: str, json: Dict) -> Dict[str, Any] | None:
         raise ApiError('数据读取超时') from e
     except requests.exceptions.HTTPError as e:
         raise ApiError('Http错误') from e
-    except BaseException:
-        raise ApiError('网络错误')
-    else:
-        if resp['code'] == -1:
-            raise ApiError(resp['message'])
-        return resp['data']
+    except BaseException as e:
+        raise ApiError('网络错误') from e
+    if resp['code'] == -1:
+        raise ApiError(resp['message'])
+    return resp.get('data')
 
 
 async def api_get(path: str) -> Dict[str, Any] | None:
@@ -82,9 +82,9 @@ async def api_get(path: str) -> Dict[str, Any] | None:
     try:
         if len(TOKEN) > 0:
             header = {'Authorization': f'Bearer {TOKEN}'}
-            resp = requests.get(url=url,headers=header)
+            resp: dict = requests.get(url=url, headers=header).json()
         else:
-            resp = requests.get(url=url)
+            resp: dict = requests.get(url=url).json()
     except requests.exceptions.ConnectTimeout as e:
         raise ApiError('连接超时') from e
     except requests.exceptions.ConnectionError as e:
@@ -93,24 +93,29 @@ async def api_get(path: str) -> Dict[str, Any] | None:
         raise ApiError('数据读取超时') from e
     except requests.exceptions.HTTPError as e:
         raise ApiError('Http错误') from e
-    except BaseException:
-        raise ApiError('网络错误')
-    else:
-        if resp['code'] == -1:
-            raise ApiError(resp['message'])
-        return resp['data']
+    except BaseException as e:
+        raise ApiError('网络错误') from e
+    if resp['code'] == -1:
+        raise ApiError(resp['message'])
+    return resp.get('data')
 
 
 async def login(username: str, password: str) -> Dict[str, Any]:
-    pass
+    data = await api_post('/login', json={'username': username, 'password': password})
+    return data['token'], data['is_admin']
 
 
 async def time() -> Tuple[datetime, int]:
-    pass
+    data = await api_get('/time')
+    return data['datetime'], data['timestamp']
 
 
-async def register() -> None:
-    pass
+async def register(username: str, password: str) -> None:
+    await api_post('/user/register', json={
+        'username': username,
+        'password': password,
+        're_password': password
+    })
 
 
 async def submit_charging_request(charge_mode: str, require_amount: str, battery_size: str) -> None:
