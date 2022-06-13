@@ -1,5 +1,6 @@
 """程序入口"""
 import sys
+import asyncio
 
 sys.path.append('.')
 
@@ -10,6 +11,7 @@ import api
 
 from toast import QToaster
 from PySide6.QtWidgets import QTableWidgetItem
+from PySide6.QtCore import QTimer
 
 
 # TODO 仿照该函数编写其它点击事件函数
@@ -70,6 +72,11 @@ async def on_checklist_clicked():
     QToaster.showMessage(window.window, "查询成功")
 
 
+@qasync.asyncSlot()
+async def preview_callback():
+    pass
+
+
 if __name__ == "__main__":
     window = mainwindow.create_window()
     window.login_button.clicked.connect(on_login_clicked)
@@ -77,4 +84,7 @@ if __name__ == "__main__":
     window.register_button.clicked.connect(on_register_clicked)
     window.query_orders_button.clicked.connect(on_checklist_clicked)
     # TODO 在这里注册其它按钮的slot函数
+    timer = QTimer()
+    timer.timeout.connect(preview_callback)
+    timer.start(1000)
     sys.exit(mainwindow.run_mainwindow())
