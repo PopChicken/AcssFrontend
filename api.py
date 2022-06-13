@@ -131,7 +131,8 @@ async def end_charging_request() -> None:
 
 
 async def query_order_detail() -> List[Dict[str, Any]]:
-    pass
+    data = await api_get('/user/query_order_detail')
+    return data
 
 
 async def preview_queue() -> Dict[str, Any]:
