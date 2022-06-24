@@ -147,7 +147,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>(userState)</string>
+     <string></string>
     </property>
    </widget>
    <widget class="QLabel" name="userIdentity">
@@ -160,7 +160,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>(userIdentity)</string>
+     <string></string>
     </property>
    </widget>
    <widget class="QPushButton" name="logoutBtn">
