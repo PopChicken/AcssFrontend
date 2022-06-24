@@ -23,11 +23,13 @@ async def on_login_clicked():
     except api.ApiError as e:
         QToaster.showMessage(window.window, str(e))
         return
-    api.TOKEN = token
     if is_admin:
+        QToaster.showMessage(window.window, "请使用用户账号")
         role = 'ADMIN'
+        return
     else:
         role = 'USER'
+    api.TOKEN = token
     window.user_role_label.setText(role)
     window.user_state_label.setText('已登陆')
     QToaster.showMessage(window.window, "登陆成功")
@@ -72,6 +74,7 @@ async def on_checklist_clicked():
         window.order_detail_table.setItem(i, 9, QTableWidgetItem(data[i]['total_cost']))
     QToaster.showMessage(window.window, "查询成功")
 
+
 last_state = 0
 @qasync.asyncSlot()
 async def preview_callback():
@@ -97,7 +100,7 @@ async def preview_callback():
     if data['cur_state'] == 'NOTCHARGING':
         window.status_label.setText('没有充电请求')
         if last_state == 1:
-            QToaster.showMessage(window.window, "充电结束")
+            QToaster.showMessage(window.window, "充电结束 请查询详单")
             last_state = 0
     elif data['cur_state'] == 'WAITINGSTAGE1':
         window.status_label.setText('在等候区等待')
@@ -110,8 +113,6 @@ async def preview_callback():
         window.status_label.setText('充电模式更改 重新排队')
     elif data['cur_state'] == 'FAULTREQUEUE':
         window.status_label.setText('充电桩故障')
-    
-    
 
 
 if __name__ == "__main__":
