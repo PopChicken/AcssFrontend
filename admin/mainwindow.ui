@@ -360,52 +360,27 @@
      </property>
      <column>
       <property name="text">
-       <string>详单编号</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>生成时间</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
        <string>充电桩编号</string>
       </property>
      </column>
      <column>
       <property name="text">
-       <string>充电电量</string>
+       <string>状态</string>
       </property>
      </column>
      <column>
       <property name="text">
-       <string>充电时长</string>
+       <string>累计使用次数</string>
       </property>
      </column>
      <column>
       <property name="text">
-       <string>启动时间</string>
+       <string>累计充电时间</string>
       </property>
      </column>
      <column>
       <property name="text">
-       <string>停止时间</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>充电费用</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>服务费用</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>总费用</string>
+       <string>累计充电电量</string>
       </property>
      </column>
     </widget>
