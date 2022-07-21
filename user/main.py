@@ -60,6 +60,7 @@ async def on_checklist_clicked():
     except api.ApiError as e:
         QToaster.showMessage(window.window, str(e))
         return
+    window.order_detail_table.clearContents()
     for i in range(0, len(data)):
         window.order_detail_table.setRowCount(i + 1)
         window.order_detail_table.setItem(i, 0, QTableWidgetItem(data[i]['order_id']))
@@ -78,6 +79,9 @@ async def on_checklist_clicked():
 last_state = 0
 @qasync.asyncSlot()
 async def preview_callback():
+    global last_state
+    if len(api.TOKEN) == 0:
+        return
     try:
         data = await api.preview_queue()
     except api.ApiError as e:
@@ -90,7 +94,9 @@ async def preview_callback():
         return
     # 排队长度
     if data['queue_len'] != -1:
-        window.queue_position_label.setText(str(data['queue_len']))
+        window.queue_position_label.setText(f"前有{data['queue_len']}人")
+    else:
+        window.queue_position_label.setText('')
     # 排队号码
     if data['charge_id']:
         window.request_id_label.setText(data['charge_id'])
@@ -115,12 +121,55 @@ async def preview_callback():
         window.status_label.setText('充电桩故障')
 
 
+@qasync.asyncSlot()
+async def on_submit_clicked():
+    try:
+        mode_text = window.charge_mode_box.currentText()
+        if mode_text == '快充':
+            mode = 'F'
+        else:
+            mode = 'T'
+        await api.submit_charging_request(mode, window.require_amount_input.text(), window.battery_capacity_input.text())
+    except api.ApiError as e:
+        QToaster.showMessage(window.window, str(e))
+        return
+    QToaster.showMessage(window.window, "请求提交成功")
+
+
+@qasync.asyncSlot()
+async def on_edit_request_clicked():
+    try:
+        mode_text = window.charge_mode_box.currentText()
+        if mode_text == '快充':
+            mode = 'F'
+        else:
+            mode = 'T'
+        await api.edit_charging_request(mode, window.require_amount_input.text())
+    except api.ApiError as e:
+        QToaster.showMessage(window.window, str(e))
+        return
+    QToaster.showMessage(window.window, "修改充电请求成功")
+
+
+@qasync.asyncSlot()
+async def on_end_request_clicked():
+    try:
+        await api.end_charging_request()
+    except api.ApiError as e:
+        QToaster.showMessage(window.window, str(e))
+        return
+    QToaster.showMessage(window.window, "已结束请求")
+
+
 if __name__ == "__main__":
     window = mainwindow.create_window()
     window.login_button.clicked.connect(on_login_clicked)
     window.logout_button.clicked.connect(on_logout_clicked)
     window.register_button.clicked.connect(on_register_clicked)
     window.query_orders_button.clicked.connect(on_checklist_clicked)
+    window.submit_request_button.clicked.connect(on_submit_clicked)
+    window.edit_request_button.clicked.connect(on_edit_request_clicked)
+    window.end_request_button.clicked.connect(on_end_request_clicked)
     # TODO 在这里注册其它按钮的slot函数
     timer = QTimer()
     timer.timeout.connect(preview_callback)

@@ -5,7 +5,8 @@ from typing import Any, Dict, List, Tuple
 import requests
 
 
-BASE_URL = 'https://acss.jnn.icu/api'  # 基础 API URL
+# BASE_URL = 'https://acss.jnn.icu/api'  # 基础 API URL (停止维护)
+BASE_URL = 'http://127.0.0.1:8000'  # 本地测试 URL
 TOKEN = ''
 
 
@@ -119,15 +120,22 @@ async def register(username: str, password: str) -> None:
 
 
 async def submit_charging_request(charge_mode: str, require_amount: str, battery_size: str) -> None:
-    pass
+    await api_post('/user/submit_charging_request', json={
+        'charge_mode': charge_mode,
+        'require_amount': require_amount,
+        'battery_size': battery_size
+    })
 
 
 async def edit_charging_request(charge_mode: str, require_amount: str) -> None:
-    pass
+    await api_post('/user/edit_charging_request', json={
+        'charge_mode': charge_mode,
+        'require_amount': require_amount
+    })
 
 
 async def end_charging_request() -> None:
-    pass
+    await api_get('/user/end_charging_request')
 
 
 async def query_order_detail() -> List[Dict[str, Any]]:
@@ -139,3 +147,25 @@ async def preview_queue() -> Dict[str, Any]:
     data = await api_get('/user/preview_queue')
     return data
 
+
+async def query_all_piles_stat() -> Dict[str, Any]:
+    data = await api_get('/admin/query_all_piles_stat')
+    return data
+
+
+async def admin_status_report() -> List[Dict[str, Any]]:
+    data = await api_get('/admin/query_report')
+    return data
+
+
+async def admin_query_queue() -> List[Dict[str, Any]]:
+    data = await api_get('/admin/query_queue')
+    return data
+
+
+async def update_pile_stat(pile_id: str, status: str) -> None:
+    data = await api_post('/admin/update_pile', json={
+        'pile_id': pile_id,
+        'status': status
+    })
+    return data
